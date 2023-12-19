@@ -38,22 +38,21 @@ int computeTheNextPrime(int prime_candidate)
     return prime_candidate;
 }
 
-int computeNthPrime(int n)
+int computeNthPrime(std::deque<int>::size_type  n)
 {
     using std::cout;
     using std::endl;
-    --n; // index at 0 is "first or 1th, prime"
     
     while ( known_primes.size() <= n) {
         int new_prime = computeTheNextPrime(known_primes.back());
         known_primes.push_back(new_prime);
         // debugging message so we know it's doing something!
-        // cout << "Computed new prime " << new_prime << endl;
+        // cout << "Computed new prime " << n << " " <<  new_prime << endl;
     }
     return known_primes[n];
 }
 
-int main(int argc, const char * argv[]) {
+int main() {
     using std::array;
     using std::cout;
     using std::endl;
@@ -62,14 +61,15 @@ int main(int argc, const char * argv[]) {
     auto t1 = Clock::now();
     
     // make test cases...
-    const int answers[] = { 0, 1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61,
+    static constexpr array<int,56> answers = { 1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61,
      67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157,
       163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257,
     };
-    constexpr int max_answers = sizeof(answers)/sizeof(answers[0]);
-    auto answer_iter = &answers[1];
-    for (auto i = 1; i < max_answers; ++i, ++answer_iter) {
-        int prime = computeNthPrime(i);
+    std::deque<int>::size_type i{0};
+    for (auto answer_iter = answers.begin(); answer_iter != answers.end(); ++answer_iter) {
+        // cout << "i " << i << endl;
+        auto prime = computeNthPrime(i);
+        ++i;
         if (prime != *answer_iter) {
             cout << "Prime found \"" << prime << "\" does not match expected answer \"" << *answer_iter << "\"" << endl;
         } else {
