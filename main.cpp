@@ -44,8 +44,8 @@ int computeNthPrime(std::deque<int>::size_type  n)
     using std::endl;
     
     while ( known_primes.size() <= n) {
-        int new_prime = computeTheNextPrime(known_primes.back());
-        known_primes.push_back(new_prime);
+        auto new_prime = computeTheNextPrime(known_primes.back());
+        known_primes.emplace_back(new_prime);
         // debugging message so we know it's doing something!
         // cout << "Computed new prime " << n << " " <<  new_prime << endl;
     }
@@ -61,14 +61,15 @@ int main() {
     auto t1 = Clock::now();
     
     // make test cases...
-    static constexpr array<int,56> answers = { 1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61,
+    static constexpr array<int,79> answers = { 1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61,
      67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157,
-      163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257,
+      163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281,
+      283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397,
     };
     std::deque<int>::size_type i{0};
     for (auto answer_iter = answers.begin(); answer_iter != answers.end(); ++answer_iter) {
         // cout << "i " << i << endl;
-        auto prime = computeNthPrime(i);
+        const auto prime = computeNthPrime(i);
         ++i;
         if (prime != *answer_iter) {
             cout << "Prime found \"" << prime << "\" does not match expected answer \"" << *answer_iter << "\"" << endl;
